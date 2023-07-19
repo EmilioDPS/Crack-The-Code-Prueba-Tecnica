@@ -1,0 +1,349 @@
+-- Parte 1
+-- Punto a
+select
+c.codigo_casamiento,
+a.nombre_articulo,
+c.fecha,
+r.cantidad_requerida,
+r.regalado
+from casamiento as c
+inner join regalos as r on c.codigo_casamiento = r.codigo_casamiento
+inner join articulos as a on r.codigo_articulo = a.codigo_articulo
+where c.fecha > "2022-01-01"
+and a.cantidad_stock < 10
+
+-- Esto nos arroja para cada codigo de casamiento sus articulos, fecha del evento, la cantidad solicitada de ese articulo y el indicador de si fue regalado. Siempre y cuando cumplan con la condicion de que el acontecimiento sea luego del 2022-01-01 y con un stock menor a 10 unidades.
+
+-- Punto b
+select
+distinct a.nombre_articulo
+from articulos as a
+inner join regalos as r on a.codigo_articulo = r.codigo_articulo
+where r.regalado = "N"
+AND r.cantidad_requerida > 100
+and a.precio > 500
+
+
+-- Esto nos arroja el nombre de cada articulo si y solo si no fue regalado, se requiera mas de 100 unidades y su precio sea mayor a 500.
+
+-- Punto c
+select
+c.codigo_casamiento,
+count(DISTINCT o.codigo_envio) as cantidad_de_envios
+from casamiento as c
+INNER join ordenes_envio as o on c.codigo_casamiento = o.codigo_casamiento
+where c.fecha >= "2021-06-01"
+group by c.codigo_casamiento
+
+-- Esto nos arroja la cantidad de envios distintos (por las dudas que la tabla de ordenes tenga envios repetidos, ya que varios productos podrian ir en un mismo envio) para cada uno de los casamientos a partir del 2021-06-01 inclusive.
+
+-- Punto d
+select
+a.nombre_articulo
+from articulos as a
+order by a.cantidad_stock asc
+limit 1
+
+-- Esto ordena de manera ascendente (menor a mayor) los artitulos segun su stock total, al limitarlo a una sola unidad se obtiene la de menor stock. (Aqui asumo que en la tabla de datos articulos cada articulo figura una unica vez)
+
+-- Las siguientes tablas fueron creadas con datos aleatorios de una inteligencia artificial. Sin embargo, el codigo fue desarrollado totalmente por cuenta propia.
+-- Estas tablas fueron utilizadas para ejecutar las resoluciones de los puntos a, b, c y d a modo de ejemplo.
+
+CREATE TABLE Novios (
+  codigo_casamiento INT,
+  nombre_novio VARCHAR(50),
+  apellido_novio VARCHAR(50));
+INSERT INTO Novios (codigo_casamiento, nombre_novio, apellido_novio)
+VALUES
+  (1, 'Juan', 'Pérez'),
+  (2, 'Pedro', 'Gómez'),
+  (3, 'Carlos', 'Sánchez'),
+  (4, 'María', 'López'),
+  (5, 'Luis', 'Martínez'),
+  (6, 'Ana', 'Rodríguez'),
+  (7, 'Andrés', 'González'),
+  (8, 'Laura', 'Hernández'),
+  (9, 'Diego', 'García'),
+  (10, 'Valentina', 'Fernández'),
+  (11, 'Sergio', 'Gómez'),
+  (12, 'Lucía', 'Torres'),
+  (13, 'Martín', 'Rojas'),
+  (14, 'Carolina', 'Silva'),
+  (15, 'Javier', 'Morales'),
+  (16, 'Camila', 'Díaz'),
+  (17, 'Gabriel', 'Navarro'),
+  (18, 'Isabella', 'Cruz'),
+  (19, 'Santiago', 'Ríos'),
+  (20, 'Valeria', 'Vargas'),
+  (21, 'Andrea', 'Chávez'),
+  (22, 'Miguel', 'Molina'),
+  (23, 'Daniela', 'Ortega'),
+  (24, 'Sebastián', 'Castañeda'),
+  (25, 'Natalia', 'Rojas');
+
+CREATE TABLE Regalos (
+  codigo_articulo INT,
+  codigo_casamiento INT,
+  cantidad_requerida INT,
+  regalado CHAR(1));
+INSERT INTO Regalos (codigo_articulo, codigo_casamiento, cantidad_requerida, regalado)
+VALUES
+  (1, 1, 1000, 'N'),
+  (2, 1, 3, 'N'),
+  (3, 2, 2, 'S'),
+  (4, 2, 2000, 'N'),
+  (5, 3, 4, 'S'),
+  (6, 3, 2, 'N'),
+  (7, 4, 3, 'S'),
+  (8, 4, 2, 'N'),
+  (9, 5, 1, 'S'),
+  (10, 5, 3, 'N'),
+  (11, 6, 5, 'S'),
+  (12, 6, 1, 'N'),
+  (13, 7, 4, 'S'),
+  (14, 7, 3, 'N'),
+  (15, 8, 2, 'S'),
+  (16, 8, 4, 'N'),
+  (17, 9, 1, 'S'),
+  (18, 9, 3, 'N'),
+  (19, 10, 5, 'S'),
+  (20, 10, 2, 'N'),
+  (21, 11, 4, 'S'),
+  (22, 11, 3, 'N'),
+  (23, 12, 2, 'S'),
+  (24, 12, 4, 'N'),
+  (25, 13, 1, 'S'),
+  (26, 13, 3, 'N'),
+  (27, 14, 5, 'S'),
+  (28, 14, 2, 'N'),
+  (29, 15, 4, 'S'),
+  (30, 15, 1, 'N'),
+  (31, 16, 3, 'S'),
+  (32, 16, 2, 'N'),
+  (33, 17, 1, 'S'),
+  (34, 17, 3, 'N'),
+  (35, 18, 5, 'S'),
+  (36, 18, 2, 'N'),
+  (37, 19, 4, 'S'),
+  (38, 19, 3, 'N'),
+  (39, 20, 2, 'S'),
+  (40, 20, 4, 'N'),
+  (41, 21, 1, 'S'),
+  (42, 21, 3, 'N'),
+  (43, 22, 5, 'S'),
+  (44, 22, 2, 'N'),
+  (45, 23, 4, 'S'),
+  (46, 23, 1, 'N'),
+  (47, 24, 3000, 'N'),
+  (48, 24, 2, 'N'),
+  (49, 25, 1, 'S'),
+  (50, 25, 3, 'N');
+  
+  CREATE TABLE Casamiento (
+  codigo_casamiento INT,
+  fecha DATE,
+  comentario VARCHAR(100));
+INSERT INTO Casamiento (codigo_casamiento, fecha, comentario)
+VALUES
+  (1, '2021-01-01', 'Comentario 1'),
+  (2, '2021-02-01', 'Comentario 2'),
+  (3, '2021-03-01', 'Comentario 3'),
+  (4, '2021-04-01', 'Comentario 4'),
+  (5, '2021-05-01', 'Comentario 5'),
+  (6, '2021-06-01', 'Comentario 6'),
+  (7, '2021-07-01', 'Comentario 7'),
+  (8, '2021-08-01', 'Comentario 8'),
+  (9, '2021-09-01', 'Comentario 9'),
+  (10, '2021-10-01', 'Comentario 10'),
+  (11, '2021-11-01', 'Comentario 11'),
+  (12, '2021-12-01', 'Comentario 12'),
+  (13, '2022-01-01', 'Comentario 13'),
+  (14, '2022-02-01', 'Comentario 14'),
+  (15, '2022-03-01', 'Comentario 15'),
+  (16, '2022-04-01', 'Comentario 16'),
+  (17, '2022-05-01', 'Comentario 17'),
+  (18, '2022-06-01', 'Comentario 18'),
+  (19, '2022-07-01', 'Comentario 19'),
+  (20, '2022-08-01', 'Comentario 20'),
+  (21, '2022-09-01', 'Comentario 21'),
+  (22, '2022-10-01', 'Comentario 22'),
+  (23, '2022-11-01', 'Comentario 23'),
+  (24, '2022-12-01', 'Comentario 24'),
+  (25, '2023-01-01', 'Comentario 25');
+  ;
+  
+  
+  CREATE TABLE Ordenes_envio (
+  codigo_envio INT,
+  codigo_casamiento INT,
+  fecha_envio DATE);
+
+INSERT INTO Ordenes_envio (codigo_envio, codigo_casamiento, fecha_envio)
+VALUES
+  (100001, 1, '2021-01-01'),
+  (100001, 1, '2021-02-01'),
+  (100002, 2, '2021-03-01'),
+  (100002, 2, '2021-04-01'),
+  (100003, 3, '2021-05-01'),
+  (100003, 3, '2021-06-01'),
+  (100004, 4, '2021-07-01'),
+  (100004, 4, '2021-08-01'),
+  (100005, 5, '2021-09-01'),
+  (100005, 5, '2021-10-01'),
+  (100006, 6, '2021-11-01'),
+  (100006, 6, '2021-12-01'),
+  (100007, 7, '2022-01-01'),
+  (100007, 7, '2022-02-01'),
+  (100008, 8, '2022-03-01'),
+  (100008, 8, '2022-04-01'),
+  (100009, 9, '2022-05-01'),
+  (100009, 9, '2022-06-01'),
+  (100010, 10, '2022-07-01'),
+  (100010, 10, '2022-08-01'),
+  (100011, 11, '2022-09-01'),
+  (100011, 11, '2022-10-01'),
+  (100012, 12, '2022-11-01'),
+  (100012, 12, '2022-12-01'),
+  (100013, 13, '2023-01-01'),
+  (100013, 13, '2023-02-01'),
+  (100014, 14, '2023-03-01'),
+  (100014, 14, '2023-04-01'),
+  (100015, 15, '2023-05-01'),
+  (100015, 15, '2023-06-01'),
+  (100016, 16, '2023-07-01'),
+  (100016, 16, '2023-08-01'),
+  (100017, 17, '2023-09-01'),
+  (100017, 17, '2023-10-01'),
+  (100018, 18, '2023-11-01'),
+  (100018, 18, '2023-12-01'),
+  (100019, 19, '2024-01-01'),
+  (100019, 19, '2024-02-01'),
+  (100020, 20, '2024-03-01'),
+  (100020, 20, '2024-04-01'),
+  (100021, 21, '2024-05-01'),
+  (100021, 21, '2024-06-01'),
+  (100022, 22, '2024-07-01'),
+  (100022, 22, '2024-08-01'),
+  (100023, 23, '2024-09-01'),
+  (100023, 23, '2024-10-01'),
+  (100024, 24, '2024-11-01'),
+  (100024, 24, '2024-12-01'),
+  (100025, 25, '2025-01-01'),
+  (100025, 25, '2025-02-01');
+  
+  
+  CREATE TABLE Articulos (
+  codigo_articulo INT,
+  precio DECIMAL(10, 2),
+  cantidad_stock INT,
+  nombre_articulo VARCHAR(100));
+INSERT INTO Articulos (codigo_articulo, precio, cantidad_stock, nombre_articulo)
+VALUES
+  (1, 5000, 10, 'Juego de sábanas de seda'),
+  (2, 650, 25, 'Vajilla de porcelana fina'),
+  (3, 250, 5, 'Cuchillos de chef de acero inoxidable'),
+  (4, 4000, 30, 'Licuadora de alta potencia'),
+  (5, 700, 15, 'Juego de copas de cristal tallado'),
+  (6, 800, 35, 'Cafetera espresso automática'),
+  (7, 150, 20, 'Set de cuchillos para carne'),
+  (8, 300, 40, 'Batidora de pie de alta gama'),
+  (9, 200, 8, 'Juego de toallas de lujo'),
+  (10, 500, 45, 'Parrilla de gas de acero inoxidable'),
+  (11, 350, 12, 'Robot de cocina multifuncional'),
+  (12, 550, 50, 'Juego de ollas y sartenes antiadherentes'),
+  (13, 400, 18, 'Aspiradora robot inteligente'),
+  (14, 700, 42, 'Batidora de mano con accesorios'),
+  (15, 250, 6, 'Juego de cubiertos de plata'),
+  (16, 600, 48, 'Licuadora de inmersión de alto rendimiento'),
+  (17, 300, 14, 'Juego de vasos de whisky de cristal'),
+  (18, 750, 38, 'Máquina de hacer pan casero'),
+  (19, 200, 22, 'Juego de tazas de café de cerámica'),
+  (20, 450, 47, 'Set de utensilios de cocina de silicona'),
+  (21, 350, 9, 'Máquina de hacer helados'),
+  (22, 550, 36, 'Juego de platos de pizarra'),
+  (23, 400, 16, 'Horno eléctrico de convección'),
+  (24, 650, 44, 'Set de recipientes de almacenamiento herméticos'),
+  (25, 150, 24, 'Dispensador automático de jabón líquido'),
+  (26, 300, 50, 'Juego de copas de vino tinto'),
+  (27, 200, 7, 'Parrilla eléctrica de mesa'),
+  (28, 500, 42, 'Batidora de mano de alta velocidad'),
+  (29, 350, 15, 'Juego de cuchillos de acero damasco'),
+  (30, 700, 32, 'Máquina de café de cápsulas'),
+  (31, 350, 19, 'Juego de bowls de cerámica'),
+  (32, 800, 45, 'Enfriador de vinos termoeléctrico'),
+  (33, 400, 11, 'Juego de moldes de repostería'),
+  (34, 600, 28, 'Exprimidor de cítricos eléctrico'),
+  (35, 300, 17, 'Set de platos de sushi'),
+  (36, 750, 34, 'Máquina de palomitas de maíz'),
+  (37, 200, 23, 'Juego de copas de champán'),
+  (38, 450, 40, 'Grill eléctrico para interiores'),
+  (39, 350, 15, 'Licuadora personal portátil'),
+  (40, 550, 32, 'Juego de cuchillos de queso'),
+  (41, 400, 21, 'Máquina de hacer pasta fresca'),
+  (42, 650, 38, 'Set de recipientes para especias'),
+  (43, 150, 20, 'Cafetera de prensa francesa'),
+  (44, 300, 30, 'Juego de tazones de mezcla de acero inoxidable'),
+  (45, 200, 10, 'Set de copas de martini'),
+  (46, 500, 25, 'Freidora de aire sin aceite'),
+  (47, 3500, 8, 'Juego de platos de servir de cerámica'),
+  (48, 600, 18, 'Tostadora de pan de diseño retro'),
+  (49, 400, 15, 'Juego de utensilios de barra de cócteles'),
+  (50, 700, 40, 'Máquina de hacer waffles');
+  ;
+  CREATE TABLE Detalle_envio (
+  codigo_envio INT,
+  codigo_articulo INT,
+  cantidad_enviada INT);
+
+INSERT INTO Detalle_envio (codigo_envio, codigo_articulo, cantidad_enviada)
+VALUES
+  (100001, 1, 10),
+  (100001, 2, 25),
+  (100002, 3, 5),
+  (100003, 4, 15),
+  (100004, 5, 8),
+  (100004, 6, 20),
+  (100005, 7, 18),
+  (100006, 8, 6),
+  (100007, 9, 12),
+  (100007, 10, 30),
+  (100008, 11, 5),
+  (100009, 12, 25),
+  (100010, 13, 4),
+  (100011, 14, 15),
+  (100012, 15, 6),
+  (100013, 16, 20),
+  (100014, 17, 10),
+  (100015, 18, 22),
+  (100016, 19, 15),
+  (100016, 20, 18),
+  (100017, 21, 7),
+  (100018, 22, 24),
+  (100019, 23, 6),
+  (100020, 24, 30),
+  (100021, 25, 12),
+  (100022, 26, 28),
+  (100023, 27, 20),
+  (100024, 28, 16),
+  (100025, 29, 12),
+  (100026, 30, 25),
+  (100027, 31, 9),
+  (100028, 32, 22),
+  (100029, 33, 14),
+  (100030, 34, 18),
+  (100031, 35, 5),
+  (100032, 36, 30),
+  (100033, 37, 10),
+  (100034, 38, 25),
+  (100035, 39, 12),
+  (100036, 40, 20),
+  (100037, 41, 8),
+  (100038, 42, 22),
+  (100039, 43, 5),
+  (100040, 44, 28),
+  (100041, 45, 10),
+  (100042, 46, 25),
+  (100043, 47, 12),
+  (100044, 48, 20),
+  (100045, 49, 6),
+  (100046, 50, 30);
